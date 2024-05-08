@@ -22,12 +22,14 @@ namespace Backend.Controllers
             _context = context;
         }
 
+        //Listar Usuarios
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
+        //Detalles Usuarios
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -41,6 +43,8 @@ namespace Backend.Controllers
             return user;
         }
 
+
+        //Crear Usuario
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
@@ -50,6 +54,7 @@ namespace Backend.Controllers
             return CreatedAtAction("GetPerson", new { id = user.Id }, user);
         }
 
+        //Eliminar Usuario
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
