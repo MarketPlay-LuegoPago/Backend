@@ -25,14 +25,14 @@ namespace Backend.Controllers
 
         //Listar Cupones
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cupon>>> GetCupones()
+        public async Task<ActionResult<IEnumerable<Coupon>>> GetCupones()
         {
             return await _context.Cupones.ToListAsync();
         }
 
         //Detalles Cupones
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cupon>> GetCupones(int id)
+        public async Task<ActionResult<Coupon>> GetCupones(int id)
         {
             var cupon = await _context.Cupones.FindAsync(id);
 
@@ -47,28 +47,33 @@ namespace Backend.Controllers
 
         //Crear Cupones
         [HttpPost]
-        public async Task<ActionResult<Cupon>> PostCupon([FromBody]Cupon cupon)
+        public async Task<ActionResult<Coupon>> PostCupon([FromBody]Coupon cupon)
         {   
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var Cupon = new Cupon
+            var Cupon = new Coupon
             {
-                Nombre = cupon.Nombre,
-                Descripcion = cupon.Descripcion,
-                FechaCreacion = DateTime.Now,
-                FechaActivacion = cupon.FechaActivacion,
-                FechaUso = cupon.FechaUso,
-                FechaVencimiento = cupon.FechaVencimiento,
-                PorcentajeDescuento = cupon.PorcentajeDescuento,
+                name = cupon.name,
+                description = cupon.description,
+                creation_date = DateTime.Now,
+                activation_date = DateTime.Now,redemption_date = DateTime.Now,
+                expiration_date = DateTime.UtcNow.AddDays(30),
+                discount = cupon.discount,
+                Status = cupon.Status,
+                use_type = cupon.use_type,
+                Quantity_uses = cupon.Quantity_uses,
+                discount_type = cupon.discount_type,
+                creator_employee_id = cupon.creator_employee_id,
+                coupon_category = cupon.coupon_category
     
             };
             _context.Cupones.Add(cupon);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCupon", new { id = cupon.Id }, cupon);
+            return CreatedAtAction("GetCupon", new { id = cupon.id }, cupon);
         }
 
 

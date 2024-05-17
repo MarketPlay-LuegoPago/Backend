@@ -24,14 +24,14 @@ namespace Backend.Controllers
 
         //Listar Usuarios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
         //Detalles Usuarios
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<Users>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -46,12 +46,12 @@ namespace Backend.Controllers
 
         //Crear Usuario
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Users>> PostUser(Users user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPerson", new { id = user.Id }, user);
+            return CreatedAtAction("GetPerson", new { id = user.id }, user);
         }
 
         //Eliminar Usuario
