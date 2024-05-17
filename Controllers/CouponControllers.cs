@@ -15,10 +15,10 @@ namespace Backend.Controllers
     /*  [Produces("application/json")]
      [Consumes("application/json")]
      [ApiConventionType(typeof(DefaultApiConventions))] */
-    public class CuponesController : Controller
+    public class CouponController : Controller
     {
         public readonly BaseContext _context;
-        public CuponesController(BaseContext context)
+        public CouponController(BaseContext context)
         {
             _context = context;
         }
@@ -27,14 +27,14 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Coupon>>> GetCupones()
         {
-            return await _context.Cupones.ToListAsync();
+            return await _context.Coupons.ToListAsync();
         }
 
         //Detalles Cupones
         [HttpGet("{id}")]
         public async Task<ActionResult<Coupon>> GetCupones(int id)
         {
-            var cupon = await _context.Cupones.FindAsync(id);
+            var cupon = await _context.Coupons.FindAsync(id);
 
             if (cupon == null)
             {
@@ -70,7 +70,7 @@ namespace Backend.Controllers
                 coupon_category = cupon.coupon_category
     
             };
-            _context.Cupones.Add(cupon);
+            _context.Coupons.Add(cupon);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCupon", new { id = cupon.id }, cupon);
@@ -82,13 +82,13 @@ namespace Backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCupon(int id)
         {
-            var cupon = await _context.Cupones.FindAsync(id);
+            var cupon = await _context.Coupons.FindAsync(id);
             if (cupon == null)
             {
                 return NotFound();
             }
 
-            _context.Cupones.Remove(cupon);
+            _context.Coupons.Remove(cupon);
             await _context.SaveChangesAsync();
 
             return NoContent();
