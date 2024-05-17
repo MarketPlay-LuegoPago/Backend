@@ -18,11 +18,9 @@ namespace Backend.Models
        public string? Status { get; set; }
        public string? use_type { get; set; }
        public int? Quantity_uses { get; set; }
-        public string? discount_type { get; set; }
-        public int creator_employee_id { get; set; }
-        public int coupon_category { get; set; }
-
-
+       public string? discount_type { get; set; }
+       public int creator_employee_id { get; set; }
+       public int coupon_category { get; set; }
 
   }
 
