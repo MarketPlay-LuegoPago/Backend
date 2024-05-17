@@ -1,3 +1,4 @@
+
 CREATE TABLE EmployeeMarketing(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name  VARCHAR(45),
@@ -6,7 +7,7 @@ CREATE TABLE EmployeeMarketing(
     role VARCHAR(45)
 )
 
-
+DROP TABLE `EmployeeMarketing`
 
 
 CREATE TABLE coupon_category(
@@ -19,6 +20,8 @@ CREATE TABLE coupon_category(
     
 )
 
+DROP TABLE `coupon_category`
+
 
 CREATE Table Redemption(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -30,9 +33,9 @@ CREATE Table Redemption(
     
 )
 
+DROP TABLE `Redemption`
 
-
-CREATE TABLE Coupon(
+CREATE TABLE Coupons(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(45),
     description VARCHAR(45),
@@ -49,6 +52,7 @@ CREATE TABLE Coupon(
     coupon_category INT
 )
 
+DROP TABLE `Coupons`
 
 CREATE table  Users(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -59,23 +63,30 @@ CREATE table  Users(
     document_number INT
 )
 
+DROP TABLE `Users`
+
 CREATE Table coupon_sent(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     user_id  INT,
     coupon_id INT
 )
 
+DROP TABLE coupon_sent
+
+
+
 ALTER TABLE coupon_category ADD FOREIGN KEY (creator_category) REFERENCES EmployeeMarketing(id)
 
 
-ALTER TABLE Coupon ADD FOREIGN KEY (creator_employee_id) REFERENCES EmployeeMarketing(id)
+ALTER TABLE Coupons ADD FOREIGN KEY (creator_employee_id) REFERENCES EmployeeMarketing(id)
 
-ALTER TABLE Coupon ADD FOREIGN KEY (coupon_category) REFERENCES coupon_category(id)
+ALTER TABLE Coupons ADD FOREIGN KEY (coupon_category) REFERENCES coupon_category(id)
 
-ALTER TABLE Redemption ADD FOREIGN KEY (Coupon_id) REFERENCES Coupon(id)
+ALTER TABLE Redemption ADD FOREIGN KEY (Coupon_id) REFERENCES Coupons(id)
 
 ALTER TABLE Redemption ADD FOREIGN KEY (EmployeeMarketing_id) REFERENCES EmployeeMarketing(id)
 
 ALTER TABLE Redemption ADD FOREIGN KEY (user_id) REFERENCES Users(id)
 
-ALTER TABLE coupon_sent  ADD FOREIGN KEY (coupon_id) REFERENCES Coupon(id)
+ALTER TABLE coupon_sent  ADD FOREIGN KEY (coupon_id) REFERENCES Coupons(id)
+
