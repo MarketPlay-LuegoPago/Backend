@@ -1,4 +1,4 @@
-using System;
+/* using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +11,6 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    /*  [Produces("application/json")]
-     [Consumes("application/json")]
-     [ApiConventionType(typeof(DefaultApiConventions))] */
     public class UsersController : Controller
     {
         public readonly BaseContext _context;
@@ -70,4 +67,4 @@ namespace Backend.Controllers
             return NoContent();
         }
     }
-}
+} */
