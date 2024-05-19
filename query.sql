@@ -9,25 +9,10 @@ CREATE TABLE EmployeeMarketing(
 
 DROP TABLE `EmployeeMarketing`
 
-
-CREATE TABLE coupon_category(
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR (45),
-    description VARCHAR(255),
-    state ENUM('active', 'inactive'),
-    creation_date DATETIME,
-    creator_category INT
-    
-)
-
-DROP TABLE `coupon_category`
-
-
 CREATE Table Redemption(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     buys_id VARCHAR(45),
     fecha_redencion DATETIME,
-    EmployeeMarketing_id INT,
     Coupon_id INT,
     user_id INT
     
@@ -41,15 +26,13 @@ CREATE TABLE Coupons(
     description VARCHAR(45),
     creation_date DATE,
     activation_date DATE,
-    redemption_date DATE,
     expiration_date DATE,
     discount DECIMAL,
     Status ENUM("activo","desactivado","redimido","eliminado") ,
     use_type ENUM("limitado", "ilimitado") ,
     Quantity_uses INT,
     discount_type ENUM("NET","PERCENTUAL"),
-    creator_employee_id INT,
-    coupon_category INT
+    creator_employee_id INT
 )
 
 DROP TABLE `Coupons`
@@ -75,18 +58,13 @@ DROP TABLE coupon_sent
 
 
 
-ALTER TABLE coupon_category ADD FOREIGN KEY (creator_category) REFERENCES EmployeeMarketing(id)
-
-
 ALTER TABLE Coupons ADD FOREIGN KEY (creator_employee_id) REFERENCES EmployeeMarketing(id)
 
-ALTER TABLE Coupons ADD FOREIGN KEY (coupon_category) REFERENCES coupon_category(id)
-
 ALTER TABLE Redemption ADD FOREIGN KEY (Coupon_id) REFERENCES Coupons(id)
-
-ALTER TABLE Redemption ADD FOREIGN KEY (EmployeeMarketing_id) REFERENCES EmployeeMarketing(id)
 
 ALTER TABLE Redemption ADD FOREIGN KEY (user_id) REFERENCES Users(id)
 
 ALTER TABLE coupon_sent  ADD FOREIGN KEY (coupon_id) REFERENCES Coupons(id)
+
+ALTER TABLE coupon_sent  ADD FOREIGN KEY (user_id) REFERENCES Users(id)
 
