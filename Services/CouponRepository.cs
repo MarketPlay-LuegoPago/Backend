@@ -42,8 +42,12 @@ namespace Backend.Services
       }
       public void Update(Coupon coupon)
       {
-        _context.Coupons.Update(coupon);
-        _context.SaveChanges();
+         var existingCoupon = _context.Coupons.Find(coupon.id);
+            if (existingCoupon != null)
+            {
+                _context.Entry(existingCoupon).CurrentValues.SetValues(coupon);
+                _context.SaveChanges();
+            }
       }
     }
 }
