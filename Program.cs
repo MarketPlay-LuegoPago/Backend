@@ -1,9 +1,12 @@
 using System.Text; //Este hace parte del token
 using Backend.Data;
+using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer; //Esta es la libreria de Jwt
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
 //Agregamos los servicios de Jwt
 builder.Services.AddAuthentication(opt => {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -31,11 +34,19 @@ builder.Services.AddDbContext<BaseContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+//Añadimos el cors MTO
+builder.Services.AddCors( options =>{
+    options.AddPolicy("AllowAnyOrigin",
+    builder => builder.AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod());
+});
 
 // Register the repository
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 var app = builder.Build();
+app.UseCors("AllowAnyOrigin"); //Usamos el Cors MTO
 app.MapControllers(); // Este tambien se comparte con el token
 
 // Configure the HTTP request pipeline.

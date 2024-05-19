@@ -11,5 +11,6 @@ namespace Backend.Data
         }
         public DbSet<Users> Users { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<EmployeeMarketing> EmployeeMarketing { get;  set; }
     }
 }
