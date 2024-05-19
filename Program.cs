@@ -1,7 +1,27 @@
+using System.Text; //Este hace parte del token
 using Backend.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer; //Esta es la libreria de Jwt
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens; //identity models Me permite validar los nuevos parametros
 
 var builder = WebApplication.CreateBuilder(args);
+//Agregamos los servicios de Jwt
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+   .AddJwtBearer(options =>
+   {
+    options.TokenValidationParameters = new TokenValidationParameters{
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer ="https://localhost:5205", //Validacion de usuario para el token
+        ValidAudience = "https://localhost:5205", //Validacion de los que generan el token o la audiencia
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ncjdncjvurbuedxwn233nnedxee+dfr-")) //Clave maestra para generar token
+    };
+   });
 
 builder.Services.AddDbContext<BaseContext>(options =>
                             options.UseMySql(
@@ -14,7 +34,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 var app = builder.Build();
-app.MapControllers();
+app.MapControllers(); // Este tambien se comparte con el token
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,7 +43,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // Este se comparte con la libreria del token
+//Agregamos Autenticaciones para el token
+app.UseAuthentication();
+app.UseAuthorization();
 
 var summaries = new[]
 {
