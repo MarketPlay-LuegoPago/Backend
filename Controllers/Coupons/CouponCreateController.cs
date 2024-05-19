@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Backend.Models
+namespace Backend.Controllers.Coupons
 {
-    public class User
+    public class CouponCreateController
     {
-        public int Id { get; set; }
+        
     }
 }

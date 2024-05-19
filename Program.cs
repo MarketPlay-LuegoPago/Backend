@@ -2,7 +2,6 @@ using System.Text; //Este hace parte del token
 using Backend.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer; //Esta es la libreria de Jwt
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens; //identity models Me permite validar los nuevos parametros
 
 var builder = WebApplication.CreateBuilder(args);
 //Agregamos los servicios de Jwt
@@ -32,6 +31,9 @@ builder.Services.AddDbContext<BaseContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+// Register the repository
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 var app = builder.Build();
 app.MapControllers(); // Este tambien se comparte con el token
