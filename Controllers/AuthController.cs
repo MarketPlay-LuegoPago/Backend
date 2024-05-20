@@ -1,21 +1,15 @@
-//Api/Services
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//Jwt
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.IdentityModel.Tokens;
-//Generales
-using Backend.Services;
-using Backend.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
 using Backend.Models;
+using Backend.Data;
 
 namespace Backend.Controllers
 {
@@ -31,12 +25,11 @@ namespace Backend.Controllers
       [HttpPost ("Login")]
       public async Task <IActionResult> Login([FromBody] EmployeeMarketing employee)
       {
-        var EmployeeMarketing = _context.EmployeeMarketing; //Con esta variable trato de instanciar la tabla deEmployeeMarketing
-
-        var EmployeeExisting =  await _context.EmployeeMarketing.FirstOrDefaultAsync(e => e.email == EmployeeMarketing.email && e.password == EmployeeMarketing.password);
-        if (EmployeeExisting == null)
+        var EmployeeMarketing = await _context.EmployeeMarketing.FirstOrDefaultAsync(e=> e.email == employee.email && e.password == employee.password); //Con esta variable trato de instanciar la tabla deEmployeeMarketing
+        
+        if (EmployeeMarketing == null)
         {
-            return BadRequest("Error en Email o Contraseña");
+            return BadRequest("Error en Correo o Contraseña"); //Mensaje que vera el empleado al ingresar informacio al empleado
         }
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ncjdncjvurbuedxwn233nnedxee+dfr-")); //Llamamos la contraseña del program
         var singninCredentials = new SigningCredentials(secretKey,SecurityAlgorithms.HmacSha256);
