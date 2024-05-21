@@ -15,7 +15,7 @@ namespace Backend.Controllers.Coupons
             _couponRepository = couponRepository;
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Route("api/coupons/{id}")]
 
         public IActionResult Delete(int id){
