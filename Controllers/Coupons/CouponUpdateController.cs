@@ -1,4 +1,4 @@
-using System;
+/* using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,19 +22,35 @@ namespace Backend.Controllers.Coupons
         [Route("update/{id}")]
         public IActionResult Update(int id, [FromBody] Coupon coupon)
         {
-         if (id != coupon.id)
-            {
-                return BadRequest("Coupon ID mismatch");
-            }
 
-            var existingCoupon = _couponRepository.GetById(id);
-            if (existingCoupon == null)
+            var userId = HttpContext.User.Identity.Name;
+            var cupon = _couponRepository.GetById(id);
+
+            if (coupon == null)
             {
                 return NotFound();
             }
 
-            _couponRepository.Update(coupon);
-            return Ok();
-        }
+            if (cupon.Quantity_uses > 0)
+            {
+                return BadRequest("El cupón ya ha sido usado y no puede ser actualizado.");
+            }
+            if (cupon.creator_employee_id != userId)
+            {
+                return Forbid("No tienes permiso para actualizar este cupón.");
+            }
+
+            _couponRepository.CouponUpdate(id, Coupon);
+
+            return Ok("Cupón actualizado correctamente.");
+
+
+
+
+
+
     }
 }
+
+} */
+

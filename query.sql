@@ -68,3 +68,37 @@ ALTER TABLE coupon_sent  ADD FOREIGN KEY (coupon_id) REFERENCES Coupons(id)
 
 ALTER TABLE coupon_sent  ADD FOREIGN KEY (user_id) REFERENCES Users(id)
 
+
+
+
+CREATE TABLE CouponCategories (
+    CategoryId INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(55)
+);
+
+
+drop Table CouponCategories;
+
+
+ALTER TABLE Coupons
+ADD CategoryId INT,
+ADD FOREIGN KEY (CategoryId) REFERENCES CouponCategories(CategoryId);
+
+INSERT INTO CouponCategories  (`Name`)
+VALUES ('Cumpleaños');
+
+
+INSERT INTO CouponCategories (`Name`)
+VALUES 
+    ('Descuento por tiempo limitado'),
+    ('Cupón de primera compra'),
+    ('Cupón de lealtad'),
+    ('Cupón de envío gratis'),
+    ('Cupón de descuento por cantidad'),
+    ('Cupón de temporada'),
+    ('Cupón de descuento por referidos'),
+    ('Cupón de descuento para estudiantes'),
+    ('Cupón de descuento para empleados'),
+    ('Cupón de aniversario'),
+    ('Cupón de descuento por compra recurrente');
+
