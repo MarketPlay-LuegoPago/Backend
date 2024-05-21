@@ -23,7 +23,8 @@ namespace Backend.Controllers.Coupons
 
         [HttpGet]
         [Route("api/coupons/{id}")]
-        public Coupon Details(int id){
+        public Coupon Details(int id)
+        {
           return _couponRepository.GetById(id);
         }
         
