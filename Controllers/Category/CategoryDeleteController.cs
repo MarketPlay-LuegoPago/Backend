@@ -3,13 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Backend.Services;
+
 
 namespace Backend.Controllers.Category
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class CategoryDeleteController : ControllerBase
     {
-        
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryDeleteController(ICategoryRepository categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
+        [HttpDelete]
+        [Route("api/categories/{id}")]
+        public IActionResult Delete(int id)
+        {
+            _categoryRepository.Remove(id);
+            return Ok();
+        }
     }
 }

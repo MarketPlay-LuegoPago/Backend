@@ -16,32 +16,32 @@ namespace Backend.Services
         }
         public void Add(CouponCategory category)
         {
-            _context.CouponCategory.Add(category);
+            _context.CouponCategories.Add(category);
             _context.SaveChanges();
         }
 
         public IEnumerable<CouponCategory> GetAll()
         {
-            return _context.CouponCategory.ToList();
+            return _context.CouponCategories.ToList();
         }
 
         public CouponCategory GetById(int id)
         {
-            return _context.CouponCategory.Find(id);
+            return _context.CouponCategories.Find(id);
         }
 
         public void Remove(int id)
         {
-            var category = _context.CouponCategory.Find(id);
+            var category = _context.CouponCategories.Find(id);
             if (category != null)
             {
-                _context.CouponCategory.Remove(category);
+                _context.CouponCategories.Remove(category);
                 _context.SaveChanges();
             }
         }
         public void Update(CouponCategory category)
         {
-            var existingCategory = _context.CouponCategory.Find(category.CategoryId);
+            var existingCategory = _context.CouponCategories.Find(category.CategoryId);
             if (existingCategory != null)
             {
                 _context.Entry(existingCategory).CurrentValues.SetValues(category);

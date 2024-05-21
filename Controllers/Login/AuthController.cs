@@ -33,6 +33,13 @@ namespace Backend.Controllers
         }
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ncjdncjvurbuedxwn233nnedxee+dfr-")); //Llamamos la contraseña del program
         var singninCredentials = new SigningCredentials(secretKey,SecurityAlgorithms.HmacSha256);
+
+         // Add the user's ID to the claims
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, EmployeeMarketing.id.ToString())
+        };
+        
         var tokenOptions = new JwtSecurityToken(
             issuer: "https://localhost:5205",
             audience: "https://localhost:5205",

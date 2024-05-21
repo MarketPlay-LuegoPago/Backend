@@ -1,56 +1,51 @@
-/* using System;
-using System.Collections.Generic;
+/* using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Backend.Services;
-using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
+using Backend.Data;
+using System.Security.Claims;
 
-namespace Backend.Controllers.Coupons
+namespace Backend.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("api/coupons")]
-    public class CouponUpdateController : ControllerBase
+    [Authorize]
+    public class CouponsController : ControllerBase
     {
-        private readonly ICouponRepository _couponRepository;
-        public CouponUpdateController(ICouponRepository couponRepository)
+        private readonly BaseContext _context;
+
+        public CouponsController(BaseContext context)
         {
-            _couponRepository = couponRepository;
+            _context = context;
         }
 
         [HttpPut("{id}")]
-        [Route("update/{id}")]
-        public IActionResult Update(int id, [FromBody] Coupon coupon)
+        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] Coupon coupon)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the user ID from the token
 
-            var userId = HttpContext.User.Identity.Name;
-            var cupon = _couponRepository.GetById(id);
+            var existingCoupon = await _context.Coupons.FindAsync(id);
 
-            if (coupon == null)
+            if (existingCoupon == null)
             {
                 return NotFound();
             }
 
-            if (cupon.Quantity_uses > 0)
+            if (existingCoupon.creator_employee_id != userId)
             {
-                return BadRequest("El cupón ya ha sido usado y no puede ser actualizado.");
-            }
-            if (cupon.creator_employee_id != userId)
-            {
-                return Forbid("No tienes permiso para actualizar este cupón.");
+                return Forbid("No tienes permiso para modificar este cupón.");
             }
 
-            _couponRepository.CouponUpdate(id, Coupon);
+            // Update the coupon details
+            existingCoupon.name = coupon.name;
+            existingCoupon.description = coupon.description;
+            // ... (otros campos que desees actualizar)
 
-            return Ok("Cupón actualizado correctamente.");
+            await _context.SaveChangesAsync();
 
-
-
-
-
-
+            return NoContent();
+        }
     }
-}
-
 } */
-

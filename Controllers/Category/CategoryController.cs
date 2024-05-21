@@ -8,8 +8,7 @@ using Backend.Models;
 
 namespace Backend.Controllers.Category
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
