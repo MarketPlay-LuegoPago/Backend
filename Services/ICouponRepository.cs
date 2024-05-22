@@ -12,6 +12,7 @@ namespace Backend.Services
         Coupon GetById(int id);
         void Add(Coupon coupon);
         void Remove(int id);
-        void Update(Coupon coupon);
+        
+        void CouponUpdate(int id, Coupon coupon);
     }
 }
