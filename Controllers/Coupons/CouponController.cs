@@ -1,51 +1,51 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
+using Backend.Services;
 
 namespace Backend.Controllers.Coupons
 {
-  public class CouponController : ControllerBase
-  {
-    private readonly ICouponRepository _couponRepository;
-    public CouponController(ICouponRepository couponRepository)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CouponController : ControllerBase
     {
-      _couponRepository = couponRepository;
+        private readonly ICouponRepository _couponRepository;
+
+        public CouponController(ICouponRepository couponRepository)
+        {
+            _couponRepository = couponRepository;
+        }
+
+        [HttpGet]
+        public IEnumerable<Coupon> GetCoupons()
+        {
+            return _couponRepository.GetAll();
+        }
+
+        [HttpGet("{id}")]
+        public Coupon Details(int id)
+        {
+            return _couponRepository.GetById(id);
+        }
+
+       [HttpGet("search")]
+        public async Task<IActionResult> SearchCoupons([FromQuery] string? name, [FromQuery] string? description, [FromQuery] string? status)
+        {
+            if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(description) && string.IsNullOrWhiteSpace(status))
+            {
+                return BadRequest("At least one search parameter must be provided");
+            }
+
+            var coupons = await _couponRepository.SearchAsync(name, description, status);
+            if (coupons == null || !coupons.Any())
+            {
+                return NotFound("No coupons found matching the specified criteria");
+            }
+
+            return Ok(coupons);
+        }
+
     }
-    [HttpGet]
-    [Route("api/coupons")]
-    public IEnumerable<Coupon> GetCoupons()
-    {
-      return _couponRepository.GetAll();
-    }
-
-    [HttpGet]
-    [Route("api/coupons/{id}")]
-    public Coupon Details(int id)
-    {
-      return _couponRepository.GetById(id);
-    }
-
-    [HttpGet("status")]
-    public async Task<IActionResult> SearchByStatus([FromQuery] string status)
-    {
-      if (string.IsNullOrWhiteSpace(status))
-      {
-        return BadRequest("Status parameter is required");
-      }
-
-      var coupons = await _couponRepository.SearchByStatusAsync(status);
-      if (coupons == null || !coupons.Any())
-      {
-        return NotFound("No coupons found with the specified status");
-      }
-
-      return Ok(coupons);
-    }
-
-
-  }
 }

@@ -10,6 +10,7 @@ namespace Backend.Controllers.Coupons
 {
     public class CouponCreateController : ControllerBase
     {
+      
         private readonly ICouponRepository _couponRepository;
         public CouponCreateController(ICouponRepository couponRepository)
         {

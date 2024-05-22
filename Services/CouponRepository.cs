@@ -50,21 +50,27 @@ namespace Backend.Services
             }
       }
         //Buscar por status
-        public async Task<IEnumerable<Coupon>> SearchByStatusAsync(string status)
-        {
-            var coupons = await _context.Coupons.ToListAsync();
+        public async Task<IEnumerable<Coupon>> SearchAsync(string? name, string? description, string? status)
+      {
+          var query = _context.Coupons.AsQueryable();
 
-            if(status == "Activo" || status == "Desactivado" ){
+          if (!string.IsNullOrWhiteSpace(name))
+          {
+              query = query.Where(c => c.name.Contains(name));
+          }
 
-              coupons = _context.Coupons.Where(x => x.Status == status).ToList();
+          if (!string.IsNullOrWhiteSpace(description))
+          {
+              query = query.Where(c => c.description.Contains(description));
+          }
 
-            }
-            
-            // Log the number of coupons found
-            Console.WriteLine($"Found {coupons.Count} coupons with status '{status}'");
-            
-            return coupons;
-        }
+          if (!string.IsNullOrWhiteSpace(status))
+          {
+              query = query.Where(c => c.Status == status);
+          }
+
+          return await query.ToListAsync();
+      }
 
     }
 }
