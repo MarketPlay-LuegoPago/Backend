@@ -1,11 +1,11 @@
-/* using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Models;
 using Backend.Data;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -14,38 +14,51 @@ namespace Backend.Controllers
     [Authorize]
     public class CouponsController : ControllerBase
     {
-        private readonly BaseContext _context;
-
-        public CouponsController(BaseContext context)
+        private readonly ICouponRepository _couponRepository;
+        
+        public CouponUpdateController(ICouponRepository couponRepository)
         {
             _context = context;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] Coupon coupon)
+        [HttpPut("update/{id}")]
+        [Authorize]
+        public IActionResult Update(int id, [FromBody] Coupon coupon)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the user ID from the token
+            
+            // Obtener el ID del usuario autenticado desde las reclamaciones del JWT
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
-            var existingCoupon = await _context.Coupons.FindAsync(id);
-
-            if (existingCoupon == null)
+            if (userIdClaim == null)
             {
-                return NotFound();
+                return Unauthorized("No se pudo obtener el ID del usuario.");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value); // Convertir el ID del usuario a entero
+
+            // Buscar el cupón por ID
+            var cupon = _couponRepository.GetById(id);
+            if (cupon == null)
+            {
+                return NotFound("Cupón no encontrado.");
             }
 
-            if (existingCoupon.creator_employee_id != userId)
+            // Verificar si el cupón ha sido usado
+            if (cupon.Quantity_uses > 0)
             {
                 return Forbid("No tienes permiso para modificar este cupón.");
             }
 
-            // Update the coupon details
-            existingCoupon.name = coupon.name;
-            existingCoupon.description = coupon.description;
-            // ... (otros campos que desees actualizar)
+            // Verificar si el usuario autenticado es el creador del cupón
+            if (cupon.creator_employee_id != userId)
+            {
+                return Forbid("No tienes permiso para actualizar este cupón.");
+            }
 
-            await _context.SaveChangesAsync();
+            // Actualizar el cupón
+            _couponRepository.CouponUpdate(id, coupon);
 
-            return NoContent();
+            return Ok("Cupón actualizado correctamente.");
         }
     }
-} */
+}

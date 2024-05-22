@@ -22,7 +22,31 @@ namespace Backend.Services
         _context.SaveChanges();
       }
 
-      public IEnumerable<Coupon> GetAll()
+      public void CouponUpdate(int id, Coupon updatedCoupon)
+        {
+            var existingCoupon = _context.Coupons.Find(id);
+            if (existingCoupon != null)
+            {
+                // Aquí actualizamos sólo los campos específicos que queremos permitir
+                existingCoupon.name = updatedCoupon.name;
+                existingCoupon.description = updatedCoupon.description;
+                existingCoupon.expiration_date = updatedCoupon.expiration_date;
+                existingCoupon.discount = updatedCoupon.discount;
+                existingCoupon.Status = updatedCoupon.Status;
+                existingCoupon.use_type = updatedCoupon.use_type;
+                existingCoupon.Quantity_uses = updatedCoupon.Quantity_uses;
+                existingCoupon.discount_type = updatedCoupon.discount_type;
+                existingCoupon.CategoryId = updatedCoupon.CategoryId;
+
+                
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Cupón no encontrado.");
+            }}
+
+        public IEnumerable<Coupon> GetAll()
       {
         return _context.Coupons.ToList();
       }
@@ -40,14 +64,6 @@ namespace Backend.Services
           _context.SaveChanges();
         }
       }
-      public void Update(Coupon coupon)
-      {
-         var existingCoupon = _context.Coupons.Find(coupon.id);
-            if (existingCoupon != null)
-            {
-                _context.Entry(existingCoupon).CurrentValues.SetValues(coupon);
-                _context.SaveChanges();
-            }
-      }
+
     }
 }

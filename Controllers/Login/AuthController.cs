@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Backend.Models;
 using Backend.Data;
+using Backend.Dto;
 
 namespace Backend.Controllers
 {
@@ -18,38 +19,45 @@ namespace Backend.Controllers
     public class AuthController : ControllerBase
     {
         private readonly BaseContext _context;
-      public AuthController(BaseContext context)
-      {
-          _context = context;
-      }
-      [HttpPost ("Login")]
-      public async Task <IActionResult> Login([FromBody] EmployeeMarketing employee)
-      {
-        var EmployeeMarketing = await _context.EmployeeMarketing.FirstOrDefaultAsync(e=> e.email == employee.email && e.password == employee.password); //Con esta variable trato de instanciar la tabla deEmployeeMarketing
-        
-        if (EmployeeMarketing == null)
-        {
-            return BadRequest("Error en Correo o Contraseña"); //Mensaje que vera el empleado al ingresar informacio al empleado
-        }
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ncjdncjvurbuedxwn233nnedxee+dfr-")); //Llamamos la contraseña del program
-        var singninCredentials = new SigningCredentials(secretKey,SecurityAlgorithms.HmacSha256);
-
-         // Add the user's ID to the claims
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, EmployeeMarketing.id.ToString())
-        };
-        
-        var tokenOptions = new JwtSecurityToken(
-            issuer: "https://localhost:5205",
-            audience: "https://localhost:5205",
-            claims: new List<Claim>(),
-            expires: DateTime.Now.AddMonths(1), // Le decimos al sistema que la session expirara en un mes contando desde que el usuario inicie sesion
-            signingCredentials: singninCredentials
-        );
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-        return Ok(new Authenticated {Token = tokenString}); //Llamamos la clase que nos guarda el token
-      }
       
+        public AuthController(BaseContext context)
+        {
+            _context = context;
+        }
+        
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] Autorize token)
+        {
+            var EmployeeMarketing = await _context.EmployeeMarketing.FirstOrDefaultAsync(t => t.email == token.email && t.password == token.password);
+            
+            if (EmployeeMarketing == null)
+            {
+                return BadRequest("Error en Correo o Contraseña");
+            }
+            else{
+                
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ncjdncjvurbuedxwn233nnedxee+dfr-"));
+            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            
+             var claims = new List<Claim> 
+            {
+                new Claim(ClaimTypes.NameIdentifier, EmployeeMarketing.id.ToString()) // Agregar el ID del usuario como reclamación en el token
+            }; 
+            
+            var tokenOptions = new JwtSecurityToken(
+                issuer: "https://localhost:5205",
+                audience: "https://localhost:5205",
+                claims: claims ,// Pasar las reclamaciones al token
+                expires: DateTime.Now.AddMonths(1),
+                signingCredentials: signingCredentials
+            );
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+             return Ok(new Authenticated { Token = tokenString });
+            }
+            
+            return Unauthorized();
+            
+           
+        }
     }
 }
