@@ -49,5 +49,22 @@ namespace Backend.Services
                 _context.SaveChanges();
             }
       }
+        //Buscar por status
+        public async Task<IEnumerable<Coupon>> SearchByStatusAsync(string status)
+        {
+            var coupons = await _context.Coupons.ToListAsync();
+
+            if(status == "Activo" || status == "Desactivado" ){
+
+              coupons = _context.Coupons.Where(x => x.Status == status).ToList();
+
+            }
+            
+            // Log the number of coupons found
+            Console.WriteLine($"Found {coupons.Count} coupons with status '{status}'");
+            
+            return coupons;
+        }
+
     }
 }
