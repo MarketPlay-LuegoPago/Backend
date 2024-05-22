@@ -10,13 +10,14 @@ namespace Backend.Controllers.Coupons
 {
     public class CouponCreateController : ControllerBase
     {
+      
         private readonly ICouponRepository _couponRepository;
         public CouponCreateController(ICouponRepository couponRepository)
         {
             _couponRepository = couponRepository;
         }
         [HttpPost]
-        [Route("api/coupons")]
+        [Route("api/[controller]")]
         public IActionResult Create([FromBody] Coupon coupon)
         {
             _couponRepository.Add(coupon);
