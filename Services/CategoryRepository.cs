@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Services
 {
@@ -14,6 +14,7 @@ namespace Backend.Services
         {
             _context = context;
         }
+
         public void Add(CouponCategory category)
         {
             _context.CouponCategories.Add(category);
@@ -39,14 +40,16 @@ namespace Backend.Services
                 _context.SaveChanges();
             }
         }
-        public void Update(CouponCategory category)
+
+        public async Task<bool> UpdateAsync(CouponCategory category)
         {
-            var existingCategory = _context.CouponCategories.Find(category.CategoryId);
+            var existingCategory = await _context.CouponCategories.FindAsync(category.CategoryId);
             if (existingCategory != null)
             {
                 _context.Entry(existingCategory).CurrentValues.SetValues(category);
-                _context.SaveChanges();
+                return await _context.SaveChangesAsync() > 0;
             }
+            return false;
         }
     }
 }
