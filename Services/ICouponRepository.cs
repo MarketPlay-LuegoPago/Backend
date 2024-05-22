@@ -13,6 +13,6 @@ namespace Backend.Services
         void Add(Coupon coupon);
         void Remove(int id);
         void Update(Coupon coupon);
-         Task<IEnumerable<Coupon>> SearchAsync(string name, string description, string status);
+         Task<IEnumerable<Coupon>> SearchAsync(string name, string description, string status, string use_type);
     }
 }

@@ -31,14 +31,14 @@ namespace Backend.Controllers.Coupons
         }
 
        [HttpGet("search")]
-        public async Task<IActionResult> SearchCoupons([FromQuery] string? name, [FromQuery] string? description, [FromQuery] string? status)
+        public async Task<IActionResult> SearchCoupons([FromQuery] string? name, [FromQuery] string? description, [FromQuery] string? status, [FromQuery] string? use_type)
         {
-            if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(description) && string.IsNullOrWhiteSpace(status))
+            if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(description) && string.IsNullOrWhiteSpace(status) && string.IsNullOrWhiteSpace(use_type    ))
             {
                 return BadRequest("At least one search parameter must be provided");
             }
 
-            var coupons = await _couponRepository.SearchAsync(name, description, status);
+            var coupons = await _couponRepository.SearchAsync(name, description, status, use_type);
             if (coupons == null || !coupons.Any())
             {
                 return NotFound("No coupons found matching the specified criteria");

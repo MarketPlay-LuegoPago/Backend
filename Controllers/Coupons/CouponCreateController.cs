@@ -17,7 +17,7 @@ namespace Backend.Controllers.Coupons
             _couponRepository = couponRepository;
         }
         [HttpPost]
-        [Route("api/coupons")]
+        [Route("api/[controller]")]
         public IActionResult Create([FromBody] Coupon coupon)
         {
             _couponRepository.Add(coupon);
