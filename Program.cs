@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de autenticación JWT
+// Agregamos los servicios de Jwt
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -23,7 +23,7 @@ builder.Services.AddAuthentication(opt =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = "https://localhost:5205",
         ValidAudience = "https://localhost:5205",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ncjdncjvurbuedxwn233nnedxee+dfr-")) // Asegúrate de usar una clave secreta segura
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ncjdncjvurbuedxwn233nnedxee+dfr-"))
     };
 });
 
@@ -33,11 +33,12 @@ builder.Services.AddDbContext<BaseContext>(options =>
         builder.Configuration.GetConnectionString("MySqlConnection"),
         Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));
 
-// Configuración de Swagger para documentación de API
+// Añadir servicios al contenedor
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
-// Configuración de CORS
+// Añadimos el CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAnyOrigin",
@@ -46,14 +47,15 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod());
 });
 
-// Registro del repositorio de cupones
+// Registrar los repositorios
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
-
-builder.Services.AddControllers();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 
-// Configuración del middleware
+app.UseCors("AllowAnyOrigin"); // Usamos el CORS
+
+// Configurar el pipeline de solicitudes HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -62,37 +64,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAnyOrigin"); // Aplicar la política de CORS
+// Añadir autenticación y autorización
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.UseAuthentication(); // Usar autenticación
-app.UseAuthorization();  // Usar autorización
-
-app.MapControllers();
-
-// Ejemplo de un endpoint
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapControllers(); // Este también se comparte con el token
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

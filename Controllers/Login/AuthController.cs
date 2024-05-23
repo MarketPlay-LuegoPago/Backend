@@ -55,9 +55,9 @@ namespace Backend.Controllers
              return Ok(new Authenticated { Token = tokenString });
             }
             
-            return Unauthorized();
             
            
+            return Unauthorized();
         }
     }
 }

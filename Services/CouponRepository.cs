@@ -16,7 +16,10 @@ namespace Backend.Services
       {
           _context = context;
       }
-      public void Add(Coupon coupon)
+
+        public object Coupons => throw new NotImplementedException();
+
+        public void Add(Coupon coupon)
       {
         _context.Coupons.Add(coupon);
         _context.SaveChanges();
@@ -55,7 +58,22 @@ namespace Backend.Services
         return _context.Coupons.Find(id);
       }
 
-      public void Remove(int id)
+        public IEnumerable<Coupon> GetByOwnerId(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Coupon> GetByOwnerId(int ownerId)
+        {
+            return _context.Coupons.Where(c => c.creator_employee_id == ownerId).ToList();
+        }
+
+        public IEnumerable<Coupon> GetByOwnerId(object ownerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(int id)
       {
         var coupo = _context.Coupons.Find(id);
         if (coupo != null)
