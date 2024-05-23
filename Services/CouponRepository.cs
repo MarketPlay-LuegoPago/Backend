@@ -12,6 +12,9 @@ namespace Backend.Services
   public class CouponRepository : ICouponRepository
   {
     private readonly BaseContext _context;
+
+    public object Coupons => throw new NotImplementedException();
+
     public CouponRepository(BaseContext context)
     {
       _context = context;
@@ -76,5 +79,19 @@ namespace Backend.Services
       return await query.ToListAsync();
     }
 
+    public async Task<IEnumerable<Coupon>> GetAllWithCategoriesAndEmployeesAsync()
+        {
+            return await _context.Coupons
+                .Include(c => c.Category)
+                .Include(c => c.CreatorEmployee)
+                .ToListAsync();
+        }
+     public async Task<Coupon> GetByIdWithCategoryAndEmployeeAsync(int id)
+        {
+            return await _context.Coupons
+                .Include(c => c.Category)
+                .Include(c => c.CreatorEmployee)
+                .FirstOrDefaultAsync(c => c.id == id);
+        }
   }
 }

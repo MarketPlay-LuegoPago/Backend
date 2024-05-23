@@ -102,3 +102,16 @@ VALUES
     ('Cupón de aniversario'),
     ('Cupón de descuento por compra recurrente');
 
+
+-- Verificar todos los cupones y sus categorías
+SELECT c.id, c.name, c.creator_employee_id, e.Name AS EmployeeName, c.CategoryId, cc.Name AS CategoryName
+FROM Coupons c
+LEFT JOIN EmployeeMarketing e ON c.creator_employee_id = e.id
+LEFT JOIN CouponCategories cc ON c.CategoryId = cc.CategoryId;
+
+-- Verificar todos los cupones de un empleado específico
+SELECT c.id, c.name, c.creator_employee_id, e.Name AS EmployeeName, c.CategoryId, cc.Name AS CategoryName
+FROM Coupons c
+LEFT JOIN EmployeeMarketing e ON c.creator_employee_id = e.id
+LEFT JOIN CouponCategories cc ON c.CategoryId = cc.CategoryId
+WHERE c.creator_employee_id = [id];

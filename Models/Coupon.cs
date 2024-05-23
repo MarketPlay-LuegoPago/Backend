@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace Backend.Models
@@ -18,8 +19,14 @@ namespace Backend.Models
        public string? use_type { get; set; }
        public int? Quantity_uses { get; set; }
        public string? discount_type { get; set; }
+
        public int creator_employee_id { get; set; }
+       [ForeignKey("id")]
+       public EmployeeMarketing CreatorEmployee { get; set; }
+       
        public int CategoryId { get; set; } 
+       [ForeignKey("CategoryId")]
+       public CouponCategory Category { get; set;}
 
 
   }
