@@ -1,11 +1,8 @@
-using System;
+/* using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Models;
-using Backend.Data;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -15,50 +12,44 @@ namespace Backend.Controllers
     public class CouponsController : ControllerBase
     {
         private readonly ICouponRepository _couponRepository;
-        
         public CouponUpdateController(ICouponRepository couponRepository)
         {
             _context = context;
         }
 
-        [HttpPut("update/{id}")]
-        [Authorize]
+        [HttpPut("{id}")]
+        [Route("update/{id}")]
         public IActionResult Update(int id, [FromBody] Coupon coupon)
         {
-            
-            // Obtener el ID del usuario autenticado desde las reclamaciones del JWT
-            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (userIdClaim == null)
-            {
-                return Unauthorized("No se pudo obtener el ID del usuario.");
-            }
-            
-            var userId = int.Parse(userIdClaim.Value); // Convertir el ID del usuario a entero
-
-            // Buscar el cupón por ID
+            var userId = HttpContext.User.Identity.Name;
             var cupon = _couponRepository.GetById(id);
-            if (cupon == null)
+
+            if (coupon == null)
             {
                 return NotFound("Cupón no encontrado.");
             }
 
-            // Verificar si el cupón ha sido usado
             if (cupon.Quantity_uses > 0)
             {
                 return Forbid("No tienes permiso para modificar este cupón.");
             }
-
-            // Verificar si el usuario autenticado es el creador del cupón
             if (cupon.creator_employee_id != userId)
             {
                 return Forbid("No tienes permiso para actualizar este cupón.");
             }
 
-            // Actualizar el cupón
-            _couponRepository.CouponUpdate(id, coupon);
+            _couponRepository.CouponUpdate(id, Coupon);
 
             return Ok("Cupón actualizado correctamente.");
-        }
+
+
+
+
+
+
     }
 }
+
+} */
+

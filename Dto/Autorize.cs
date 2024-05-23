@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Backend.Controllers;
 
-
 namespace Backend.Dto
-
 {
     
   public class Autorize
