@@ -52,5 +52,17 @@ namespace Backend.Services
             return false;
         }
 
+        public async Task<IEnumerable<CouponCategory>> SearchAsync(string Name)
+        {
+            var query = _context.CouponCategories.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(Name))
+            {
+                query = query.Where(c => c.Name.Contains(Name));
+            }
+
+            return await query.ToListAsync();
+        }
+
     }
 }

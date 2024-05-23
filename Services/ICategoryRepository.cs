@@ -11,5 +11,6 @@ namespace Backend.Services
         void Add(CouponCategory category);
         void Remove(int id);
         Task<bool> UpdateAsync(CouponCategory category);
+        Task<IEnumerable<CouponCategory>> SearchAsync(string Name);
     }
 }

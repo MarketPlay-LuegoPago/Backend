@@ -16,7 +16,7 @@ namespace Backend.Controllers.Category
             _categoryRepository = categoryRepository;
         }
         [HttpPost]
-        [Route("api/categories")]
+        [Route("api/[controller]")]
         public IActionResult Create([FromBody] CouponCategory category)
         {
             _categoryRepository.Add(category);
