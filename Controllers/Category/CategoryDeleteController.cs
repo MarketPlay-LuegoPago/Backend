@@ -16,7 +16,7 @@ namespace Backend.Controllers.Category
             _categoryRepository = categoryRepository;
         }
         [HttpDelete]
-        [Route("api/categories/{id}")]
+        [Route("api/[controller]/{id}")]
         public IActionResult Delete(int id)
         {
             _categoryRepository.Remove(id);

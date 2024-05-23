@@ -6,7 +6,7 @@ using Backend.Services;
 namespace Backend.Controllers.Category
 {
     [ApiController]
-    [Route("api/categories")]
+    [Route("api/[controller]")]
     public class CategoryUpdateController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
