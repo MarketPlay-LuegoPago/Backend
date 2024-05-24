@@ -79,13 +79,14 @@ namespace Backend.Services
       return await query.ToListAsync();
     }
 
-    public async Task<IEnumerable<Coupon>> GetAllWithCategoriesAndEmployeesAsync()
-        {
-            return await _context.Coupons
-                .Include(c => c.Category)
-                .Include(c => c.CreatorEmployee)
-                .ToListAsync();
-        }
+public async Task<IEnumerable<Coupon>> GetAllWithCategoriesAndEmployeesAsync()
+{
+    return await _context.Coupons
+        .Include(c => c.Category) // Incluye la relación con la categoría
+        .Include(c => c.CreatorEmployee) // Incluye la relación con el empleado creador
+        .ToListAsync(); // Trae todos los cupones con sus relaciones
+}
+
      public async Task<Coupon> GetByIdWithCategoryAndEmployeeAsync(int id)
         {
             return await _context.Coupons
