@@ -6,6 +6,7 @@ using Backend.Models;
 using Backend.Services;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Services
 {
@@ -21,11 +22,37 @@ namespace Backend.Services
     }
     public void Add(Coupon coupon)
     {
-      _context.Coupons.Add(coupon);
-      _context.SaveChanges();
-    }
+        // Establecemos la fecha de creacion
+        coupon.creation_date = DateTime.Now;
 
-    public IEnumerable<Coupon> GetAll()
+      if (coupon.activation_date > coupon.expiration_date)
+      {
+        throw new ArgumentException("La Fecha de activacion no puede ser mayor a la de expiracion.");
+      }
+      if (coupon.activation_date < coupon.creation_date)
+      {
+        throw new ArgumentException("La Fecha de activacion no puede ser menor a la de creacion.");
+      }
+       if (coupon.expiration_date < coupon.creation_date)
+      {
+        throw new ArgumentException("La Fecha de expiracion no puede ser menor a la de creacion.");
+      }
+
+      try
+      {
+
+
+
+        _context.Coupons.Add(coupon);
+        _context.SaveChanges();
+      }
+      catch (Exception ex)
+      {
+        throw new ArgumentException("Error no se puede crear el cupon" + ex);
+      }
+      
+    }
+        public IEnumerable<Coupon> GetAll()
     {
       return _context.Coupons.ToList();
     }
