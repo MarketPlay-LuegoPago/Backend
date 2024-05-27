@@ -22,14 +22,12 @@ namespace Backend.Services
     }
     public void Add(Coupon coupon)
     {
-        // Establecemos la fecha de creacion
-        coupon.creation_date = DateTime.Now;
 
       if (coupon.activation_date > coupon.expiration_date)
       {
         throw new ArgumentException("La Fecha de activacion no puede ser mayor a la de expiracion.");
       }
-      if (coupon.activation_date < coupon.creation_date)
+      if (coupon.creation_date > coupon.activation_date)
       {
         throw new ArgumentException("La Fecha de activacion no puede ser menor a la de creacion.");
       }
@@ -38,10 +36,16 @@ namespace Backend.Services
         throw new ArgumentException("La Fecha de expiracion no puede ser menor a la de creacion.");
       }
 
+       if (coupon.creation_date > coupon.activation_date)
+      {
+        throw new ArgumentException("La Fecha de creacion no puede ser mayor a la de activacion.");
+      }
+
       try
       {
 
-
+        // Establecemos la fecha de creacion
+        coupon.creation_date = DateTime.Now;
 
         _context.Coupons.Add(coupon);
         _context.SaveChanges();
