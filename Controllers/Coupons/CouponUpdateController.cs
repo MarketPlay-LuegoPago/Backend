@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
- 
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+
     public class CouponsController : ControllerBase
     {
         private readonly ICouponRepository _couponRepository;
@@ -20,8 +23,8 @@ namespace Backend.Controllers
         }
 
         [HttpPut]
-        [Route ("api/coupons/update/{id}")]
-        [Authorize]
+        [Route ("/update/{id}")]
+        
         public async Task<IActionResult> UpdateCoupon(int id, [FromBody] Coupon updatedCoupon)
         {
             var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 
 
 namespace Backend.Controllers.Coupons
-{
+{   
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class CouponDeleteController : ControllerBase
     {
         private readonly ICouponRepository _couponRepository;
@@ -21,8 +24,7 @@ namespace Backend.Controllers.Coupons
 
 
         [HttpPut]
-        [Route("api/coupons/delete/{id}")]
-        [Authorize]
+        [Route("/delete/{id}")]
         public async Task<IActionResult> DeleteCoupon(int id)
         {
             var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

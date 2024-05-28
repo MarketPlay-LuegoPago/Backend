@@ -6,8 +6,12 @@ using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
 
+
+
 namespace Backend.Controllers.Coupons
-{
+{   
+    [Route("api/[controller]")]
+    [ApiController]
     public class CouponCreateController : ControllerBase
     {
       
@@ -17,7 +21,7 @@ namespace Backend.Controllers.Coupons
             _couponRepository = couponRepository;
         }
         [HttpPost]
-        [Route("api/[controller]")]
+        [Route("create")]
         public IActionResult Create([FromBody] Coupon coupon)
         {   
             if (coupon == null)
