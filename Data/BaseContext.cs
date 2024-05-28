@@ -13,5 +13,10 @@ namespace Backend.Data
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<EmployeeMarketing> EmployeeMarketing { get; set; }
         public DbSet<CouponCategory> CouponCategories { get; set; }
+
+        internal async Task ToList(object id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

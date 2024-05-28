@@ -63,7 +63,7 @@ namespace Backend.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Coupon> GetByOwnerId(int ownerId)
+        public async Task <IEnumerable<Coupon>> GetByOwnerId(int ownerId) //Se implementa el async con los operadores pero aun no me dio 😑 <>
         {
             return _context.Coupons.Where(c => c.creator_employee_id == ownerId).ToList();
         }
@@ -83,5 +83,9 @@ namespace Backend.Services
         }
       }
 
+        IEnumerable<Coupon> ICouponRepository.GetByOwnerId(int ownerId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
