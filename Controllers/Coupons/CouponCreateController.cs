@@ -10,17 +10,29 @@ namespace Backend.Controllers.Coupons
 {
     public class CouponCreateController : ControllerBase
     {
+      
         private readonly ICouponRepository _couponRepository;
         public CouponCreateController(ICouponRepository couponRepository)
         {
             _couponRepository = couponRepository;
         }
         [HttpPost]
-        [Route("api/coupons")]
+        [Route("api/[controller]")]
         public IActionResult Create([FromBody] Coupon coupon)
-        {
+        {   
+            if (coupon == null)
+            {
+                return BadRequest();
+            }
+            try 
+            {
             _couponRepository.Add(coupon);
             return Ok(coupon);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new{ message = ex.Message});
+            }
         }
     }
 }
