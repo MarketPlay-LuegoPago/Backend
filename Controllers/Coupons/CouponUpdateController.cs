@@ -19,55 +19,6 @@ namespace Backend.Controllers
             _couponRepository = couponRepository;
         }
 
-/*      [HttpPut]
-        [Route ("api/coupons/update/{id}")]
-        [Authorize]
-
-        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] Coupon updatedCoupon)
-        {
-          
-            var userIdClaim =User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userId = int.Parse(userIdClaim);
-            var coupon = _couponRepository.GetById(id);
-
-            if (coupon == null)
-            {
-                return NotFound("Cupón no encontrado.");
-            }
-
-            if (coupon.creator_employee_id != userId)
-            {
-                return Forbid("No tienes permiso para editar este cupón.");
-            }
-
-            if (coupon.Quantity_uses > 0)
-            {
-                return BadRequest("El cupón no se puede editar porque ya ha sido utilizado.");
-            }
-
-            updatedCoupon.id = id; // Asegurar que el ID del cupón no cambie
-            updatedCoupon.creator_employee_id = coupon.creator_employee_id; // Mantener el ID del creador original
-            
-
-            var result = await _couponRepository.UpdateCouponAsync(id, updatedCoupon,userId);
-            if (!result.IsSuccess)
-            {
-                StatusCode(result.StatusCode, result.Message);
-            }
-
-            return Ok("Cupón actualizado correctamente."); 
-
-            var result = await _couponRepository.UpdateCouponAsync(id, updatedCoupon, userId);
-            if (!result.IsSuccess)
-            {
-                return StatusCode(result.StatusCode, result.Message);
-            }
-
-            return Ok("Cupón actualizado correctamente.");
-
-        } */
-
-
         [HttpPut]
         [Route ("api/coupons/update/{id}")]
         [Authorize]
