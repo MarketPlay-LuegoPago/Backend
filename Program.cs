@@ -27,6 +27,7 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 
+// Configuración de la base de datos
 builder.Services.AddDbContext<BaseContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("MySqlConnection"),

@@ -17,12 +17,6 @@ namespace Backend.Models
        public string? role { get; set; }
       public ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
   }
-    //Este modelo no altera la base de datos, lo que hace esta calse es guardar los tokens y mostrarlos como en el localStorage
-  public class Authenticated
-  {
-    public string? Token {get; set; }
-
-  }
 
   // Relacion con la Tabla Coupon
  
