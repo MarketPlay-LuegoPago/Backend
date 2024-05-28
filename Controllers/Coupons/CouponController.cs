@@ -11,7 +11,7 @@ namespace Backend.Controllers{
   [ApiController]
   [Authorize]
   public class CouponController : ControllerBase
-  {
+  { 
     private readonly ICouponRepository _couponRepository;
     public CouponController( ICouponRepository couponRepository)
     {
@@ -29,7 +29,8 @@ namespace Backend.Controllers{
       var coupons = _couponRepository.GetByOwnerId(int.Parse(userId));
       return Ok(coupons);
     }
-    [HttpGet("{id}")] //Recibimos el id del usuario para poder listar los cupones
+    [HttpGet("{id}")]
+    [Authorize] //Recibimos el id del usuario para poder listar los cupones
     public IActionResult GetCoupon(int id)
     {
       //obtenemos el id del usuario mediante Jhonson web token

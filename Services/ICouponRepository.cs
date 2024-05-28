@@ -14,12 +14,16 @@ namespace Backend.Services
         IEnumerable<Coupon> GetAll();
         Coupon GetById(int id);
         void Add(Coupon coupon);
-        void Remove(int id);
+         Task<respuesta> DeleteCouponAsync(int id, int userId);
         
-        void CouponUpdate(int id, Coupon coupon);
+        
         // object GetByOwnerId(int id ownerId);
         //Mostramos los cupones que crea un solo usuario
         IEnumerable<Coupon> GetByOwnerId(int? id);
         IEnumerable<Coupon> GetByOwnerId(object ownerId);
+        Task<respuesta> UpdateCouponAsync(int id, Coupon updatedCoupon, int userId);
+        //Task<(bool IsSuccess, int StatusCode, string ErrorMessage)> UpdateCouponAsync(int id, Coupon updatedCoupon, int userId);
+       
+        
     }
 }
