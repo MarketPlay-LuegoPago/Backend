@@ -10,11 +10,11 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class RedemptionCouponController : ControllerBase
     {
-        private readonly RedemtionCoupon _redencionCuponService;
+        private readonly RedemptionCouponService _redemptionCouponService;
 
-        public RedemptionCouponController(RedemtionCoupon redencionCuponService)
+        public RedemptionCouponController(RedemptionCouponService redemptionCouponService)
         {
-            _redencionCuponService = redencionCuponService;
+            _redemptionCouponService = redemptionCouponService;
         }
 
         [HttpPost("redimir")]
@@ -22,7 +22,7 @@ namespace Backend.Controllers
         {
             try
             {
-                var resultado = await _redencionCuponService.RedimirCupon(request.CodigoCupon, request.UsuarioId);
+                var resultado = await _redemptionCouponService.RedimirCupon(request.CodigoCupon, request.UsuarioId);
                 return Ok(new { mensaje = "Cupón redimido exitosamente." });
             }
             catch (Exception ex)
@@ -30,10 +30,6 @@ namespace Backend.Controllers
                 return BadRequest(new { mensaje = ex.Message });
             }
         }
-    }
-
-    internal class RedencionCuponService
-    {
     }
 
     public class RedimirCuponRequest

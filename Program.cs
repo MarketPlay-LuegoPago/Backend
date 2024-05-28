@@ -49,7 +49,7 @@ builder.Services.AddCors(options =>
 // Registrar los repositorios
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<RedemtionCoupon>();
+builder.Services.AddScoped<RedemptionCouponService>();
 
 var app = builder.Build();
 
