@@ -19,9 +19,20 @@ namespace Backend.Controllers.Coupons
         [HttpPost]
         [Route("api/[controller]")]
         public IActionResult Create([FromBody] Coupon coupon)
-        {
+        {   
+            if (coupon == null)
+            {
+                return BadRequest();
+            }
+            try 
+            {
             _couponRepository.Add(coupon);
             return Ok(coupon);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new{ message = ex.Message});
+            }
         }
     }
 }
