@@ -22,7 +22,7 @@ namespace Backend.Models
 
 
     public int creator_employee_id { get; set; }
-    [ForeignKey("creator_employee_id")] // Corrige la configuración de la clave externa
+    [ForeignKey("creator_employee_id")]
     public EmployeeMarketing CreatorEmployee { get; set; }
 
     public int CategoryId { get; set; }
