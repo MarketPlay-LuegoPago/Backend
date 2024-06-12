@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Agregamos los servicios de Jwt
@@ -26,6 +27,7 @@ builder.Services.AddAuthentication(opt =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ncjdncjvurbuedxwn233nnedxee+dfr-"))
     };
 });
+
 
 builder.Services.AddDbContext<BaseContext>(options =>
     options.UseMySql(

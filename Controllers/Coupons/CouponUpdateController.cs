@@ -1,11 +1,8 @@
-/* using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+/* using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Models;
-using Backend.Data;
-using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -14,38 +11,45 @@ namespace Backend.Controllers
     [Authorize]
     public class CouponsController : ControllerBase
     {
-        private readonly BaseContext _context;
-
-        public CouponsController(BaseContext context)
+        private readonly ICouponRepository _couponRepository;
+        public CouponUpdateController(ICouponRepository couponRepository)
         {
             _context = context;
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] Coupon coupon)
+        [Route("update/{id}")]
+        public IActionResult Update(int id, [FromBody] Coupon coupon)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the user ID from the token
 
-            var existingCoupon = await _context.Coupons.FindAsync(id);
+            var userId = HttpContext.User.Identity.Name;
+            var cupon = _couponRepository.GetById(id);
 
-            if (existingCoupon == null)
+            if (coupon == null)
             {
-                return NotFound();
+                return NotFound("Cupón no encontrado.");
             }
 
-            if (existingCoupon.creator_employee_id != userId)
+            if (cupon.Quantity_uses > 0)
             {
                 return Forbid("No tienes permiso para modificar este cupón.");
             }
+            if (cupon.creator_employee_id != userId)
+            {
+                return Forbid("No tienes permiso para actualizar este cupón.");
+            }
 
-            // Update the coupon details
-            existingCoupon.name = coupon.name;
-            existingCoupon.description = coupon.description;
-            // ... (otros campos que desees actualizar)
+            _couponRepository.CouponUpdate(id, Coupon);
 
-            await _context.SaveChangesAsync();
+            return Ok("Cupón actualizado correctamente.");
 
-            return NoContent();
-        }
+
+
+
+
+
     }
+}
+
 } */
+

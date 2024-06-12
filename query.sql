@@ -17,6 +17,7 @@ CREATE Table Redemption(
     user_id INT
     
 )
+SELECT * from EmployeeMarketing;
 
 DROP TABLE `Redemption`
 
@@ -33,7 +34,7 @@ CREATE TABLE Coupons(
     Quantity_uses INT,
     discount_type ENUM("NET","PERCENTUAL"),
     creator_employee_id INT
-)
+);
 
 DROP TABLE `Coupons`
 
