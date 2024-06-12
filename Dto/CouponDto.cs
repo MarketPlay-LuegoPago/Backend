@@ -7,7 +7,7 @@ namespace Backend.Models
 {
     public class CouponDto
     {
-         public int id { get; set; }
+          public int id { get; set; }
         public string? name { get; set; }
         public string? description { get; set; }
         public DateTime? creation_date { get; set; }
@@ -20,5 +20,7 @@ namespace Backend.Models
         public string? discount_type { get; set; }
         public string CreatorEmployeeName { get; set; }
         public string CategoryName { get; set; }
+        public int creator_employee_id { get; set; }
+        public int categoryId { get; set; }
     }
 }
