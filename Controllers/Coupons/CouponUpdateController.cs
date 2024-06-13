@@ -47,6 +47,7 @@ namespace Backend.Controllers
                     return BadRequest("El cupón no se puede editar porque ya ha sido utilizado.");
                 }
 
+
             updatedCoupon.id = id; // Asegurar que el ID del cupón no cambie
             updatedCoupon.creator_employee_id = coupon.creator_employee_id; // Mantener el ID del creador original
 
@@ -62,10 +63,17 @@ namespace Backend.Controllers
 }
 
 
+            updatedCoupon.id = id; // Asegurar que el ID del cupón no cambie
+            updatedCoupon.creator_employee_id = coupon.creator_employee_id; // Mantener el ID del creador original
 
+            var result = await _couponRepository.UpdateCouponAsync(id, updatedCoupon, userId);
+            if (!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
 
-
-
-
-
+            return Ok("Cupón actualizado correctamente.");
+        }
+    }
+}
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
+
 namespace Backend.Controllers.Coupons
 {
     [ApiController]
@@ -106,6 +107,4 @@ namespace Backend.Controllers.Coupons
         }
     }
 }
-
-
 
