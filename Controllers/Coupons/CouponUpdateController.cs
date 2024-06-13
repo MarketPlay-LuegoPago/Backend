@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks; // Necesario para Task
 using Backend.Services;
 using Backend.Models;
 using Backend.Data;
@@ -12,7 +13,6 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-
     public class CouponsController : ControllerBase
     {
         private readonly ICouponRepository _couponRepository;
@@ -23,7 +23,6 @@ namespace Backend.Controllers
         }
 
         [HttpPut]
-
         public async Task<IActionResult> UpdateCoupon(int id, [FromBody] Coupon updatedCoupon)
         {
             var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -46,7 +45,6 @@ namespace Backend.Controllers
                 return BadRequest("El cupón no se puede editar porque ya ha sido utilizado.");
             }
 
-
             updatedCoupon.id = id; // Asegurar que el ID del cupón no cambie
             updatedCoupon.EmployeeMarketingId = coupon.EmployeeMarketingId; // Mantener el ID del creador original
 
@@ -60,19 +58,3 @@ namespace Backend.Controllers
         }
     }
 }
-
-
-            updatedCoupon.id = id; // Asegurar que el ID del cupón no cambie
-            updatedCoupon.creator_employee_id = coupon.creator_employee_id; // Mantener el ID del creador original
-
-            var result = await _couponRepository.UpdateCouponAsync(id, updatedCoupon, userId);
-            if (!result.IsSuccess)
-            {
-                return StatusCode(result.StatusCode, result.Message);
-            }
-
-            return Ok("Cupón actualizado correctamente.");
-        }
-    }
-}
-

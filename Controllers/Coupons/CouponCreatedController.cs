@@ -33,7 +33,7 @@ namespace Backend.Controllers{
         return NotFound();
       }
       //Verificamos si el usuario actual es el creador del cupon.
-      if (coupon.creator_employee_id != int.Parse(userId))
+      if (coupon.EmployeeMarketingId != int.Parse(userId))
       {
         return BadRequest("No tienes permisos para acceder a este cupon");
       }
