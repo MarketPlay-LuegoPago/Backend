@@ -20,6 +20,7 @@ namespace Backend.Services
         IEnumerable<Coupon> GetByOwnerId(int ownerId);
         Task<Coupon> GetCouponByIdAsync(int id);
         Task<Respuesta> UpdateCouponAsync(int id, Coupon updatedCoupon, int userId);
+         Task<int> SaveChangesAsync();
     }
 
     public class Respuesta

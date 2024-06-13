@@ -52,6 +52,12 @@ namespace Backend.Services
             }
         }
 
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
+
         public IEnumerable<Coupon> GetAll()
         {
             return _context.Coupons.ToList();
