@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Backend.Models;
+using Backend.Dto;
 
 namespace Backend.Services
 {
@@ -20,3 +21,4 @@ namespace Backend.Services
         Task<respuesta> UpdateCouponAsync(int id, Coupon updatedCoupon, int userId);
     }
 }
+

@@ -171,6 +171,98 @@ namespace Backend.Services
         }
 
 
+
+    //Metodo Buscar
+    public async Task<IEnumerable<Coupon>> SearchAsync(string? name, string? description, string? status, string? use_type)
+    {
+      var query = _context.Coupons.AsQueryable();
+
+      if (!string.IsNullOrWhiteSpace(name))
+      {
+        query = query.Where(c => c.name.Contains(name));
+      }
+
+      if (!string.IsNullOrWhiteSpace(description))
+      {
+        query = query.Where(c => c.description.Contains(description));
+      }
+
+      if (!string.IsNullOrWhiteSpace(status))
+      {
+        query = query.Where(c => c.Status == status);
+      }
+      if (!string.IsNullOrWhiteSpace(use_type))
+      {
+        query = query.Where(c => c.use_type.Contains(use_type));
+      }
+
+      return await query.ToListAsync();
+    }
+
+    public async Task<IEnumerable<Coupon>> GetAllWithCategoriesAndEmployeesAsync()
+    {
+        return await _context.Coupons
+            .Include(c => c.Category) // Incluye la relación con la categoría
+            .Include(c => c.CreatorEmployee) // Incluye la relación con el empleado creador
+            .ToListAsync(); // Trae todos los cupones con sus relaciones
+    }
+
+      public async Task<Coupon> GetByIdWithCategoryAndEmployeeAsync(int id)
+            {
+                return await _context.Coupons
+                    .Include(c => c.Category)
+                    .Include(c => c.CreatorEmployee)
+                    .FirstOrDefaultAsync(c => c.id == id);
+            }
+      
+
+     public IEnumerable<Coupon> GetByOwnerId(int ownerId)
+        {
+            return _context.Coupons.Where(c => c.creator_employee_id == ownerId).ToList();
+        }
+
+        public async Task<Coupon> GetCouponByIdAsync(int id)
+        {
+            return await _context.Coupons.FindAsync(id);
+        }
+
+
+
+
+
+        public IEnumerable<Coupon> GetByOwnerId(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Coupon> GetByOwnerId(object ownerId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        public async Task<respuesta> UpdateCouponAsync(int id, Coupon updatedCoupon, int userId)
+      {
+          // Recuperar la entidad existente del contexto
+          var existingCoupon = await _context.Coupons.FindAsync(id);
+
+          if (existingCoupon == null)
+          {
+              return new respuesta() { IsSuccess = false, StatusCode = 404, Message = "Cupón no encontrado." };
+          }
+
+          // Aplicar las actualizaciones a la entidad existente
+          _context.Entry(existingCoupon).CurrentValues.SetValues(updatedCoupon);
+
+          // Guardar los cambios
+          await _context.SaveChangesAsync();
+
+          return new respuesta() { IsSuccess = true, StatusCode = 200, Message = "Actualizado" };
+      }
+
+
+
         public async Task<respuesta> DeleteCouponAsync(int id, int userId)
         {
             var existingCoupon = await _context.Coupons.FindAsync(id);
@@ -197,13 +289,21 @@ namespace Backend.Services
 
 
 
-
         }
         public class respuesta{
 
         public bool IsSuccess { get; set; }
         public int StatusCode { get; set; }
         public string Message { get; set; }
+      }
     }
+
+       
+   }
+
+
+
+
+
 }
 
