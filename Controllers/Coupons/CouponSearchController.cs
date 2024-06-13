@@ -10,19 +10,29 @@ namespace Backend.Controllers.Coupons
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CouponController : ControllerBase
+    public class CouponSearchController : ControllerBase
     {
         private readonly ICouponRepository _couponRepository;
 
-        public CouponController(ICouponRepository couponRepository)
+        public CouponSearchController(ICouponRepository couponRepository)
         {
             _couponRepository = couponRepository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CouponDto>>> GetCoupons()
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchCoupons([FromQuery] string? name, [FromQuery] string? description, [FromQuery] string? status, [FromQuery] string? use_type)
         {
-            var coupons = await _couponRepository.GetAllWithCategoriesAndEmployeesAsync();
+            if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(description) && string.IsNullOrWhiteSpace(status) && string.IsNullOrWhiteSpace(use_type))
+            {
+                return BadRequest("At least one search parameter must be provided");
+            }
+
+            var coupons = await _couponRepository.SearchAsync(name, description, status, use_type);
+            if (coupons == null || !coupons.Any())
+            {
+                return NotFound("No coupons found matching the specified criteria");
+            }
+
             var couponDtos = coupons.Select(c => new CouponDto
             {
                 id = c.id,
@@ -42,7 +52,5 @@ namespace Backend.Controllers.Coupons
 
             return Ok(couponDtos);
         }
-
     }
 }
-

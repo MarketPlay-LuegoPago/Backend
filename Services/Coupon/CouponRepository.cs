@@ -82,7 +82,7 @@ namespace Backend.Services
         {
             return await _context.Coupons
                                  .Include(c => c.Category)
-                                 .Include(c => c.CreatorEmployee)
+                                 .Include(c => c.EmployeeMarketing)
                                  .ToListAsync();
         }
 
@@ -90,7 +90,7 @@ namespace Backend.Services
         {
             return await _context.Coupons
                                  .Include(c => c.Category)
-                                 .Include(c => c.CreatorEmployee)
+                                 .Include(c => c.EmployeeMarketing)
                                  .FirstOrDefaultAsync(c => c.id == id);
         }
 
@@ -120,14 +120,14 @@ namespace Backend.Services
 
             return await query
                          .Include(c => c.Category)
-                         .Include(c => c.CreatorEmployee)
+                         .Include(c => c.EmployeeMarketing)
                          .ToListAsync();
         }
 
 
         public IEnumerable<Coupon> GetByOwnerId(int ownerId)
         {
-            return _context.Coupons.Where(c => c.creator_employee_id == ownerId).ToList();
+            return _context.Coupons.Where(c => c.EmployeeMarketingId == ownerId).ToList();
         }
 
         public async Task<Coupon> GetCouponByIdAsync(int id)
