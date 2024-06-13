@@ -57,6 +57,8 @@ CREATE Table coupon_sent(
 
 DROP TABLE coupon_sent
 
+ALTER 
+
 
 
 ALTER TABLE Coupons ADD FOREIGN KEY (creator_employee_id) REFERENCES EmployeeMarketing(id)
@@ -197,3 +199,14 @@ INSERT INTO CouponCategories (Name) VALUES
     ('Cupón de aniversario'),
     ('Cupón de descuento por compra recurrente');
  */
+
+ TRUNCATE table EmployeeMarketing
+
+  TRUNCATE table Coupons
+
+ALTER TABLE EmployeeMarketing
+MODIFY COLUMN email VARCHAR (225) UNIQUE
+
+
+ALTER TABLE coupon_sent
+MODIFY COLUMN Email VARCHAR (225) UNIQUE

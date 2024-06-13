@@ -21,12 +21,11 @@ namespace Backend.Models
     public string? discount_type { get; set; }
 
 
-    public int creator_employee_id { get; set; }
-    [ForeignKey("creator_employee_id")]
-    public EmployeeMarketing CreatorEmployee { get; set; }
+    public int EmployeeMarketingId { get; set; }
+        public EmployeeMarketing EmployeeMarketing { get; set; }
 
     public int CategoryId { get; set; }
-    [ForeignKey("CategoryId")]
+    
     public CouponCategory Category { get; set; }
 
   }

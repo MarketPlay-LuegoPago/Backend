@@ -50,7 +50,7 @@ namespace Backend.Controllers.Coupons
                 use_type = createCouponDto.use_type,
                 Quantity_uses = createCouponDto.quantity_uses,
                 discount_type = createCouponDto.discount_type,
-                creator_employee_id = createCouponDto.creator_employee_id,
+                EmployeeMarketingId = createCouponDto.EmployeeMarketing,
                 CategoryId = createCouponDto.categoryId
             };
 
@@ -74,9 +74,9 @@ namespace Backend.Controllers.Coupons
                     use_type = createdCoupon.use_type,
                     Quantity_uses = createdCoupon.Quantity_uses,
                     discount_type = createdCoupon.discount_type,
-                    creator_employee_id = createdCoupon.creator_employee_id,
+                    creator_employee_id = createdCoupon.EmployeeMarketingId,
                     categoryId = createdCoupon.CategoryId,
-                    CreatorEmployeeName = createdCoupon.CreatorEmployee?.name,
+                    CreatorEmployeeName = createdCoupon.EmployeeMarketing?.name,
                     CategoryName = createdCoupon.Category?.Name
                 };
 

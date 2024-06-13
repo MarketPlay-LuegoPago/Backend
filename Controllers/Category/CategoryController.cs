@@ -23,28 +23,6 @@ namespace Backend.Controllers.Category
     public IEnumerable<CouponCategory> GetCategories()
     {
       return _categoryRepository.GetAll();
-    }
-
-    [HttpGet("{id}")]
-    public CouponCategory Details(int id)
-    {
-      return _categoryRepository.GetById(id);
-    }
-
-    [HttpGet("search")]
-    public async Task <IActionResult> SearchCategory ([FromQuery] string? Name)
-    {
-      if (string.IsNullOrWhiteSpace(Name))
-      {
-        return BadRequest("At least one search parameter must be provided");
-      }
-
-      var categories = await _categoryRepository.SearchAsync(Name);
-      if (categories == null ||!categories.Any())
-      {
-        return NotFound("No categories found matching the specified criteria");
-      }
-      return Ok(categories);
-    }
+    }   
   }
 }

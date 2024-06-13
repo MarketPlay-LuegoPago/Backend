@@ -17,7 +17,7 @@ namespace Backend.Dto
         public string use_type { get; set; }
         public int quantity_uses { get; set; }
         public string discount_type { get; set; }
-        public int creator_employee_id { get; set; }
+        public int EmployeeMarketing { get; set; }
         public int categoryId { get; set; }
     }
 }

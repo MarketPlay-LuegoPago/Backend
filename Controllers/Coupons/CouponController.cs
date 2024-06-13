@@ -37,12 +37,14 @@ namespace Backend.Controllers.Coupons
                 Quantity_uses = c.Quantity_uses,
                 discount_type = c.discount_type,
                 CategoryName = c.Category.Name,
-                CreatorEmployeeName = c.CreatorEmployee.name // Asignar el nombre del empleado creador
+                CreatorEmployeeName = c.EmployeeMarketing.name // Asignar el nombre del empleado creador
             }).ToList();
 
             return Ok(couponDtos);
         }
 
+<<<<<<< HEAD
+=======
         [HttpGet("Details{id}")]
         public async Task<ActionResult<CouponDto>> Details(int id)
         {
@@ -105,6 +107,7 @@ namespace Backend.Controllers.Coupons
 
             return Ok(couponDtos);
         }
+>>>>>>> 43f033f3c9d50a1c4323b4843362d116d27dc689
     }
 }
 
