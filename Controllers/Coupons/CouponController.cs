@@ -43,7 +43,7 @@ namespace Backend.Controllers.Coupons
             return Ok(couponDtos);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("Details{id}")]
         public async Task<ActionResult<CouponDto>> Details(int id)
         {
             var coupon = await _couponRepository.GetByIdWithCategoryAndEmployeeAsync(id);

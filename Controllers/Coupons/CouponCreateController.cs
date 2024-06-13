@@ -5,10 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
 using Backend.Dto;
 
+
+
 namespace Backend.Controllers.Coupons
 {
     [ApiController]
     [Route("api/[controller]")]
+
+{   
+
     public class CouponCreateController : ControllerBase
     {
         private readonly ICouponRepository _couponRepository;
@@ -19,9 +24,16 @@ namespace Backend.Controllers.Coupons
         }
 
         [HttpPost]
+
         public async Task<IActionResult> Create([FromBody] CreateCouponDto createCouponDto)
         {
             if (createCouponDto == null)
+
+        [Route("create")]
+        public IActionResult Create([FromBody] Coupon coupon)
+        {   
+            if (coupon == null)
+
             {
                 return BadRequest();
             }
